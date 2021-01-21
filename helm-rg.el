@@ -142,7 +142,10 @@ symbol."
   (unless (executable-find helm-rg-executable)
     (error "rg not installed"))
   (progn
-    (setq helm-rg-path (or basedir default-directory))
+    (setq helm-rg-path (or (and (project-current)
+                                (file-truename (project-root (project-current))))
+                           basedir
+                           default-directory))
     (helm
      :buffer "*helm rg*"
      :input (or pattern "")
